@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.fftpack as fft
+import matplotlib
+matplotlib.rc("font", family="Comic Sans MS")
 
 def f(x):
     return np.exp(-x*x)
@@ -21,9 +23,9 @@ x, dx = np.linspace(-5, 5, N, retstep=True)
 f0 = f(x)
 f1 = pochodna(x)
 f2 = drugapochodna(x)
-axes.plot(x, f0, "b-", label="funkcja")
-axes.plot(x, f1, "c-", label="pochodna")
-axes.plot(x, f2, "k-", label="druga pochodna")
+axes.plot(x, f0, "b-", label="$f(x)$", lw=3)
+axes.plot(x, f1, "c-", label="$f'(x)$", lw=3)
+axes.plot(x, f2, "k-", label="$f''(x)$", lw=3)
 
 relative_errors = np.zeros(len(Nvec), dtype=float)
 relative_errors2 = np.zeros(len(Nvec), dtype=float)
@@ -51,20 +53,19 @@ for i, N in enumerate(Nvec):
     relative_errors2[i] = norm2(f2, f2_z_fouriera)
 
 
-    axes.plot(x, f1_z_fouriera, "r--", label="pochodna fourier")
-    axes.plot(x, f2_z_fouriera, "g--", label="druga fourier")
-
+    axes.plot(x, f1_z_fouriera, "r--")
+    axes.plot(x, f2_z_fouriera, "g--")
+plt.legend()
+plt.xlabel("$x$")
+plt.ylabel("$y$")
 plt.grid()
-# plt.legend()
 plt.show()
+
 
 plt.loglog(Nvec, relative_errors, "bo-", label="pierwsza pochodna")
 plt.loglog(Nvec, relative_errors2, "ro-", label="druga pochodna")
+plt.xlabel("Liczba punktów na siatce $N$")
+plt.ylabel("Błąd względny (norma rzędu 1)")
 plt.legend()
-plt.show()
-# fig2, axes2 = plt.subplots()
-#
-# axes2.bar(fourier_frequencies, np.abs(fourier0), fourier_step)
-# axes2.bar(fourier_frequencies, np.abs(fourier1), fourier_step, color=[1,0,0])
-# axes2.set_xlim(-2,2)
+plt.grid()
 plt.show()
