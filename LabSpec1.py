@@ -12,12 +12,11 @@ def pochodna(x):
 def drugapochodna(x):
     return -2*f(x) + 4*x*x*f(x)
 
-def norm2(vec1, vec2):
+def norm(vec1, vec2):
     return np.sum(np.abs(vec1-vec2))/np.sum(np.abs(vec1))
-    # return np.sqrt(np.abs(np.sum((vec1-vec2)**2)/np.sum(vec1**2)))
 
 fig, axes = plt.subplots()
-N = 1000 #liczba
+N = 1000
 Nvec = np.arange(4,1000,1)
 x, dx = np.linspace(-5, 5, N, retstep=True)
 f0 = f(x)
@@ -46,11 +45,11 @@ for i, N in enumerate(Nvec):
     f2_z_fouriera = fft.ifft(fourier2)
     f2_z_fouriera *= np.max(f2)/np.max(f2_z_fouriera.real)
 
-    n1 = norm2(f1, f1_z_fouriera)
+    n1 = norm(f1, f1_z_fouriera)
     # print(n1)
     relative_errors[i] = n1
     # print(relative_errors[i])
-    relative_errors2[i] = norm2(f2, f2_z_fouriera)
+    relative_errors2[i] = norm(f2, f2_z_fouriera)
 
 
     axes.plot(x, f1_z_fouriera, "r--")
