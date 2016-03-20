@@ -21,29 +21,29 @@ with h5py.File("data.hdf5", "r") as f:
     currents_z = f['currentsz']
 
     z_min, z_max = 450, 650
-    x_min = 50
+    x_min = 10
 
     Z1 = Z[x_min,ny/2,z_min:z_max]
     VZ1 = currents_z[x_min,ny/2,z_min:z_max]/np.abs(psi[x_min,ny/2,z_min:z_max])**2
     plt.plot(Z1, VZ1, label=1)
     integral_1 = simps(VZ1, dx=dz)
 
-    X2 = X[nx/2, x_min:int(nx/2)+1, z_max]
+    X2 = Y[x_min:int(nx/2)+1, ny/2, z_max]
 
     # print(X2)
-    VX2 = currents_x[nx/2, x_min:int(nx/2)+1, z_max]/np.abs(psi[nx/2, x_min:int(nx/2)+1, z_max])**2
+    VX2 = currents_x[x_min:int(nx/2)+1, ny/2, z_max]/np.abs(psi[x_min:int(nx/2)+1, ny/2, z_max])**2
     plt.plot(X2, VX2, label=2)
     integral_2 = simps(VX2, dx=dx)
 
     Z3 = Z[nx/2,ny/2,z_min:z_max]
     # print(Z3)
-    VZ3 = currents_z[int(nx/2),int(ny/2),z_min:z_max]/np.abs(psi[int(nx/2),int(ny/2),z_min:z_max])**2
+    VZ3 = currents_z[nx/2,ny/2,z_min:z_max]/np.abs(psi[nx/2,ny/2,z_min:z_max])**2
     plt.plot(Z3, VZ3, label=3)
     integral_3 = simps(VZ3, dx=-dz)
 
-    X4 = X[ny/2, x_min:int(nx/2)+1, z_min]
+    X4 = Y[x_min:int(nx/2)+1, ny/2, z_min]
     # print(X4)
-    VX4 = currents_x[ny/2, x_min:int(nx/2)+1, z_min]/np.abs(psi[ny/2, x_min:int(nx/2)+1, z_min])**2
+    VX4 = currents_x[x_min:int(nx/2)+1, ny/2, z_min]/np.abs(psi[x_min:int(nx/2)+1, ny/2, z_min])**2
     plt.plot(X4, VX4, label=4)
     integral_4 = simps(VX4, dx=-dx)
 
