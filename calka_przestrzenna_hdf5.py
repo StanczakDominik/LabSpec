@@ -17,9 +17,9 @@ x = y = np.arange(nx)
 z = np.arange(nz)
 X,Y,Z = np.meshgrid(x,y,z)
 NX, NY, NZ = nx, ny, nz
-X -= int(NX/2);
-Y -= int(NY/2);
-Z -= int(NZ/2);
+# X -= int(NX/2)
+# Y -= int(NY/2)
+# Z -= int(NZ/2)
 
 calki_po_przekrojach = np.zeros((nz,3))
 with h5py.File("data.hdf5", "r+") as f:
@@ -48,7 +48,7 @@ with h5py.File("data.hdf5", "r+") as f:
         Intgr_Lz_x_y = scint.simps(Intgr_Lz_x, axis=0)
 
         calki_po_przekrojach[k,:] = Intgr_Lx_x_y.real, Intgr_Ly_x_y.real, Intgr_Lz_x_y.real
-    calki_przekrojowe = f.create_dataset('calki', data=calki_po_przekrojach)
+    calki_przekrojowe = f.create_dataset('calki_bez_korekty_ped', data=calki_po_przekrojach)
 calki_full = scint.simps(calki_po_przekrojach, axis=0)
 print(calki_full)
 Intgr_Lx_x_y_z, Intgr_Ly_x_y_z, Intgr_Lz_x_y_z = calki_full
