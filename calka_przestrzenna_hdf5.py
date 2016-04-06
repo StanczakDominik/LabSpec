@@ -27,7 +27,7 @@ with h5py.File("data.hdf5", "r+") as f:
     grady_pointer = f['grady']
     gradz_pointer = f['gradz']
     psi_pointer = f['psi']
-    #calki_przekrojowe = f['calki_test']    
+    #calki_przekrojowe = f['calki_test']
     for k in range(nz):
         print(k)
         grad_x = gradx_pointer[:,:,k]
@@ -37,17 +37,17 @@ with h5py.File("data.hdf5", "r+") as f:
         psi_Lz_psi = -1j*(X[:,:,k]*grad_y - Y[:,:,k]*grad_x)*psi.conjugate()
         psi_Lx_psi = -1j*(Y[:,:,k]*grad_z - Z[:,:,k]*grad_y)*psi.conjugate()
         psi_Ly_psi = -1j*(Z[:,:,k]*grad_x - X[:,:,k]*grad_z)*psi.conjugate()
-        
+
         Intgr_Lx_x = scint.simps(psi_Lx_psi, axis=0)
         Intgr_Lx_x_y = scint.simps(Intgr_Lx_x, axis=0)
-        
+
         Intgr_Ly_x = scint.simps(psi_Ly_psi, axis=0)
         Intgr_Ly_x_y = scint.simps(Intgr_Ly_x, axis=0)
-        
+
         Intgr_Lz_x = scint.simps(psi_Lz_psi, axis=0)
         Intgr_Lz_x_y = scint.simps(Intgr_Lz_x, axis=0)
-        
-        calki_po_przekrojach[k,:] = Intgr_Lx_x_y, Intgr_Ly_x_y, Intgr_Lz_x_y
+
+        calki_po_przekrojach[k,:] = Intgr_Lx_x_y.real, Intgr_Ly_x_y.real, Intgr_Lz_x_y.real
     calki_przekrojowe = f.create_dataset('calki', data=calki_po_przekrojach)
 calki_full = scint.simps(calki_po_przekrojach, axis=0)
 print(calki_full)
