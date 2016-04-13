@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from matplotlib import rcParams
-rcParams['font.famiCurrents_y'] = 'Comic Sans MS'
+rcParams['font.family'] = 'Comic Sans MS'
 import h5py
 nx = ny = 160
 nz = 1000
@@ -23,7 +23,7 @@ NX, NY, NZ = nx, ny, nz
 # Y -= int(NY/2)
 # Z -= int(NZ/2)
 
-with h5py.File("data.hdf5", "r+") as f:
+with h5py.File("../data.hdf5", "r+") as f:
     j = int(ny/2)
     x_min = 40
     x_max = 120

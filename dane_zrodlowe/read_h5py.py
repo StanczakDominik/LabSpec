@@ -1,7 +1,7 @@
 import numpy as np
 import h5py
 
-with h5py.File("data.hdf5", "r+") as f:
+with h5py.File("data.hdf5", "a") as f:
     for item in f.items():
         print(item)
     # psi = f.create_dataset("psi", data=np.load("psi.npy"))
