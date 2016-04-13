@@ -1,17 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 24 12:49:42 2016
-
-@author: Mateusz
-"""
-
-from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 from matplotlib import rcParams
-rcParams['font.family'] = 'Comic Sans MS'
+rcParams['font.family'] = 'DejaVu Sans'
 import h5py
+
 nx = ny = 160
 nz = 1000
 dx = dy = dz = 1
@@ -23,30 +15,37 @@ NX, NY, NZ = nx, ny, nz
 # Y -= int(NY/2)
 # Z -= int(NZ/2)
 
-with h5py.File("../data.hdf5", "r+") as f:
-    j = int(ny/2)
+with h5py.File("data.hdf5") as f:
+    i = int(ny/2)
     x_min = 40
     x_max = 120
     z_min = 500
     z_max = 600
-    X = X[j,x_min:x_max,z_min:z_max]
-    Y = Y[j,x_min:x_max,z_min:z_max]
-    Z = Z[j,x_min:x_max,z_min:z_max]
-    print(X, Y, Z, sep='\n')
-    Currents_z = f['currentsz'][j,x_min:x_max,z_min:z_max].real
-    Currents_y = f['currentsy'][j,x_min:x_max,z_min:z_max].real
-    Currents_x = f['currentsx'][j,x_min:x_max,z_min:z_max].real
-    print(Currents_x.shape, np.min(Currents_x), np.max(Currents_x), np.mean(Currents_x))
+    nz = f.attrs['ZN']
+    nx, ny = f.attrs['XN'], f.attrs['YN']
+
+    X = f['X'][:,x_min:x_max,z_min:z_max]
+    Z = f['Z'][:,x_min:x_max,z_min:z_max]
+    Currents_z = f['currentsz'][:,x_min:x_max,z_min:z_max]
+    Currents_y = f['currentsy'][:,x_min:x_max,z_min:z_max]
+    Currents_x = f['currentsx'][:,x_min:x_max,z_min:z_max]
+    lengths_2d = np.hypot(Currents_x,Currents_z)
+    arrows_values = np.hypot(Currents_x,Currents_y,Currents_z)
+    arrows_horizontal = Currents_z/lengths_2d
+    arrows_vertical = Currents_x/lengths_2d
+
+    fig, vector_ax = plt.subplots(figsize=(8,8))
     every_n_point = 1
     def thin(X):
         return X[::every_n_point, ::every_n_point]
 
-    fig, vector_ax = plt.subplots(figsize=(8,8))
-    vector_ax.set_title("Prądy w płaszczyźnie $x-z$, przekrój w połowie osi $y$")
+    vector_ax.set_title(u"Prądy w płaszczyźnie x-z, przekrój w połowie osi y")
     vector_ax.grid()
-    vector_ax.quiver(thin(Z), thin(X), thin(Currents_z/np.hypot(Currents_x,Currents_z)), thin(Currents_x/np.hypot(Currents_x,Currents_z)), thin(np.hypot(Currents_x, Currents_y, Currents_z)), scale_units='xy', scale=1, angles='xy', alpha=0.9)
-    vector_ax.set_xlabel("$z$")
-    vector_ax.set_ylabel("$x$")
-    plt.savefig("wektor.png")
-    plt.savefig("wektor.pdf")
+    vector_ax.quiver(thin(Z[i, :, :]), thin(X[i, :, :]),
+        thin(arrows_horizontal[i, :, :]), thin(arrows_vertical[i, :, :]),
+        thin(arrows_values[i, :, :]), scale_units='xy', scale=1, angles='xy',
+        alpha=0.9)
+    vector_ax.set_xlabel(u"z")
+    vector_ax.set_ylabel(u"x")
+    plt.savefig("grafika/wektor.png")
     plt.show()

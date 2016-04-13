@@ -2,3 +2,6 @@ pythondata*
 *.npy
 *.dat
 *.hdf5
+*.png
+*.mp4
+*.pdf
