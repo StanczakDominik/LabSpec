@@ -66,105 +66,37 @@ grad_y = np.load("disp_grady.npy")
 # np.save("currents_z", currents_z)
 
 with h5py.File("data.hdf5", "r") as f:
-    
-
-grad_z= np.load("disp_gradz.npy")
-NX, NY, NZ = grad_x.shape
-
-dx = dy = dz = 1
-
-x = y = np.arange(0, NX*dx, dx)
-z = np.arange(0, NZ*dz, dz)
-X,Y,Z = np.meshgrid(x,y,z)
-
-X -= NX/2.0;
-Y -= NY/2.0;
-Z -= NZ/2.0;
-
-psi_Lz_psi = -1j*(X*grad_y - Y*grad_x)*psi.conjugate()
-psi_Lx_psi = -1j*(Y*grad_z - Z*grad_y)*psi.conjugate()
-psi_Ly_psi = -1j*(Z*grad_x - X*grad_z)*psi.conjugate()
-
-Intgr_Lx_x = scint.simps(psi_Lx_psi, axis=0)
-Intgr_Lx_x_y = scint.simps(Intgr_Lx_x, axis=0)
-Intgr_Lx_x_y_z = scint.simps(Intgr_Lx_x_y, axis=0)
-
-Intgr_Ly_x = scint.simps(psi_Ly_psi, axis=0)
-Intgr_Ly_x_y = scint.simps(Intgr_Ly_x, axis=0)
-Intgr_Ly_x_y_z = scint.simps(Intgr_Ly_x_y, axis=0)
-
-Intgr_Lz_x = scint.simps(psi_Lz_psi, axis=0)
-Intgr_Lz_x_y = scint.simps(Intgr_Lz_x, axis=0)
-Intgr_Lz_x_y_z = scint.simps(Intgr_Lz_x_y, axis=0)
-
-print(Intgr_Lx_x_y_z)
-print(Intgr_Ly_x_y_z)
-print(Intgr_Lz_x_y_z)
 
 
-# density = np.abs(psi)**2
-# np.save("density", density)
-##density = np.load("density.npy")
+    grad_z= np.load("disp_gradz.npy")
+    NX, NY, NZ = grad_x.shape
 
-##velocity_x = currents_x/density
-##velocity_y = currents_y/density
-##velocity_z = currents_z/density
+    dx = dy = dz = 1
 
-# loop = np.array([[0,ny/2,0], [0,ny/2,nz], [nx/2, ny/2, nz], [nx/2, ny/2, 0], [0,ny/2, 0]])
+    x = y = np.arange(0, NX*dx, dx)
+    z = np.arange(0, NZ*dz, dz)
+    X,Y,Z = np.meshgrid(x,y,z)
 
-# z_min, z_max = 400, 650
-# integral_1 = simps(velocity_z[0,ny/2,z_min:z_max], dx=dz)
-# integral_2 = simps(velocity_x[0:nx/2+1, ny/2, z_max], dx=dx)
-# integral_3 = simps(velocity_z[nx/2,ny/2,z_min:z_max], dx=-dz)
-# integral_4 = simps(velocity_x[0:nx/2+1, ny/2, z_min], dx=-dx)
-##z_int = 550
-##integral_1 = simps(velocity_x[:,0,z_int], dx=dx)
-##integral_2 = simps(velocity_y[-1,:,z_int], dx=dy)
-##integral_3 = simps(velocity_x[:,-1,z_int], dx=-dx)
-##integral_4 = simps(velocity_y[0,:,z_int], dx=-dy)
-##total = integral_1 + integral_2 + integral_3 + integral_4
-##print(integral_1, integral_2, integral_3, integral_4, total, total/2/np.pi, sep="\n")
+    X -= NX/2.0;
+    Y -= NY/2.0;
+    Z -= NZ/2.0;
 
+    psi_Lz_psi = -1j*(X*grad_y - Y*grad_x)*psi.conjugate()
+    psi_Lx_psi = -1j*(Y*grad_z - Z*grad_y)*psi.conjugate()
+    psi_Ly_psi = -1j*(Z*grad_x - X*grad_z)*psi.conjugate()
 
+    Intgr_Lx_x = scint.simps(psi_Lx_psi, axis=0)
+    Intgr_Lx_x_y = scint.simps(Intgr_Lx_x, axis=0)
+    Intgr_Lx_x_y_z = scint.simps(Intgr_Lx_x_y, axis=0)
 
+    Intgr_Ly_x = scint.simps(psi_Ly_psi, axis=0)
+    Intgr_Ly_x_y = scint.simps(Intgr_Ly_x, axis=0)
+    Intgr_Ly_x_y_z = scint.simps(Intgr_Ly_x_y, axis=0)
 
+    Intgr_Lz_x = scint.simps(psi_Lz_psi, axis=0)
+    Intgr_Lz_x_y = scint.simps(Intgr_Lz_x, axis=0)
+    Intgr_Lz_x_y_z = scint.simps(Intgr_Lz_x_y, axis=0)
 
-
-
-
-
-
-#
-# every_X_vector = 3
-# X=X[::every_X_vector,::every_X_vector,::every_X_vector]
-# Y=Y[::every_X_vector,::every_X_vector,::every_X_vector]
-# Z=Z[::every_X_vector,::every_X_vector,::every_X_vector]
-# psi = psi[::every_X_vector,::every_X_vector,::every_X_vector]
-# density=density[::every_X_vector,::every_X_vector,::every_X_vector]
-#
-# np.save("disp_X", X)
-# np.save("disp_Y", Y)
-# np.save("disp_Z", Z)
-# np.save("disp_psi", psi)
-# np.save("disp_density", density)
-
-# currents_x = np.load("currents_x.npy")
-# gradx = np.load("gradx.npy")
-# gradx=gradx[::every_X_vector,::every_X_vector,::every_X_vector]
-# currents_x=currents_x[::every_X_vector,::every_X_vector,::every_X_vector]
-# np.save("disp_gradx", gradx)
-# np.save("disp_currentsx", currents_x)
-#
-# grady = np.load("grady.npy")
-# currents_y =np.load("currents_y.npy")
-# grady=grady[::every_X_vector,::every_X_vector,::every_X_vector]
-# currents_y=currents_y[::every_X_vector,::every_X_vector,::every_X_vector]
-# np.save("disp_grady", grady)
-# np.save("disp_currentsy", currents_y)
-#
-# gradz = np.load("gradz.npy")
-# currents_z = np.load("currents_z.npy")
-# gradz=gradz[::every_X_vector,::every_X_vector,::every_X_vector]
-# currents_z=currents_z[::every_X_vector,::every_X_vector,::every_X_vector]
-# np.save("disp_gradz", gradz)
-# np.save("disp_currentsz", currents_z)
+    print(Intgr_Lx_x_y_z)
+    print(Intgr_Ly_x_y_z)
+    print(Intgr_Lz_x_y_z)
