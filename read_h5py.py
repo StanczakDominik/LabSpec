@@ -2,8 +2,11 @@ import numpy as np
 import h5py
 
 with h5py.File("data.hdf5", "a") as f:
-    for item in f.items():
-        print(item)
+    for key, item in f.items():
+        print(key, item)
+        # print(item[0])
+    for key, item in f.attrs.items():
+        print(key, item)
     # psi = f.create_dataset("psi", data=np.load("psi.npy"))
     # gradx = f.create_dataset("gradx", data=np.load("gradx.npy"))
     # grady = f.create_dataset("grady", data=np.load("grady.npy"))

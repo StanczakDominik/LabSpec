@@ -11,10 +11,9 @@ X,Y,Z = np.meshgrid(x,y,z)
 # every_X_vector = 3
 
 with h5py.File("data.hdf5", "r") as f:
-    psi = f['psi']
-    gradx = f['gradx']
-    grady = f['grady']
-    gradz = f['gradz']
+    X = f['X']
+    Y = f['Y']
+    Z = f['Z']
     currents_x = f['currentsx']
     currents_y = f['currentsy']
     currents_z = f['currentsz']
@@ -30,10 +29,7 @@ with h5py.File("data.hdf5", "r") as f:
     mlab.plot3d(X3, Y3, Z3, tube_radius=5)
     X4, Y4, Z4 = X[x_min:int(nx/2)+1, ny/2, z_min], Y[x_min:int(nx/2)+1, ny/2, z_min], Z[x_min:int(nx/2)+1, ny/2, z_min]
     mlab.plot3d(X4, Y4, Z4, tube_radius=5)
-
-    # loop = np.array([[0,ny/2,z_min], [0,ny/2,z_max], [nx/2, ny/2, z_max], [nx/2, ny/2, z_min], [0,ny/2, z_min]])
-    # loop_x, loop_y, loop_z = loop[:,0], loop[:,1], loop[:,2]
-    quiver = mlab.quiver3d(X[::5,::5,::5], Y[::5,::5,::5], Z[::5,::5,::5],
-        currents_x[::5,::5,::5].real, currents_y[::5,::5,::5].real, currents_z[::5,::5,::5].real)
-    # quiver = mlab.quiver3d(X, Y, Z,velocity_x, velocity_y, velocity_y)
+    NS = 5
+    quiver = mlab.quiver3d(X[::NS,::NS,::NS], Y[::NS,::NS,::NS], Z[::NS,::NS,::NS],
+        currents_x[::NS,::NS,::NS], currents_y[::NS,::NS,::NS], currents_z[::NS,::NS,::NS])
     mlab.show()

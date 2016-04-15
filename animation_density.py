@@ -38,4 +38,4 @@ def animate_density(save=False):
     plt.show()
 
 if __name__ == "__main__":
-    animate_density()
+    animate_density(save=True)
