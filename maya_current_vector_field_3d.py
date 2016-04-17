@@ -14,9 +14,10 @@ with h5py.File("data.hdf5", "r") as f:
     X = f['X']
     Y = f['Y']
     Z = f['Z']
-    currents_x = f['currentsx']
-    currents_y = f['currentsy']
-    currents_z = f['currentsz']
+    data = "currents"
+    currents_x = f[data +'x']
+    currents_z = f[data +'z']
+    currents_y = f[data +'y']
 
     z_min, z_max = 450, 650
     x_min = 10

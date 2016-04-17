@@ -1,12 +1,15 @@
-import numpy as np
 import h5py
 
-with h5py.File("data.hdf5", "a") as f:
-    for key, item in f.items():
-        print(key, item)
-        # print(item[0])
-    for key, item in f.attrs.items():
-        print(key, item)
+f = h5py.File("data.hdf5")
+for key, item in f.items():
+    print(key, item)
+    # if key !="psi":
+    #     f.__delitem__(key)
+    # print(item[0])
+for key, item in f.attrs.items():
+    print(key, item)
+    # if key not in ("XN, ZN, YN"):
+    #     f.__delattr__(key)
     # psi = f.create_dataset("psi", data=np.load("psi.npy"))
     # gradx = f.create_dataset("gradx", data=np.load("gradx.npy"))
     # grady = f.create_dataset("grady", data=np.load("grady.npy"))

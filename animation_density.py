@@ -7,11 +7,11 @@ import h5py
 
 def animate_density(save=False):
     with h5py.File("data.hdf5") as f:
-        Xmin = f.attrs['Xmin']
-        Xmax = f.attrs['Xmax']
-        Ymin = f.attrs['Ymin']
-        Ymax = f.attrs['Ymax']
-        Zmin = f.attrs['Zmin']
+        Xmin = np.min(f['X'])
+        Xmax = np.max(f['X'])
+        Ymin = np.min(f['Y'])
+        Ymax = np.max(f['Y'])
+        Zmin = np.min(f['Z'])
         ZN = f.attrs['ZN']
         density = f['density'][...]
         z = f['Z'][0,0,:]
