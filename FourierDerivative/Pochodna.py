@@ -17,7 +17,7 @@ def norm(vec1, vec2):
 
 fig, axes = plt.subplots()
 N = 1000
-Nvec = np.arange(4,1000,1)
+Nvec = np.logspace(1,3,100).astype(int)
 x, dx = np.linspace(-5, 5, N, retstep=True)
 f0 = f(x)
 f1 = pochodna(x)
